@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kisan Voice Bot</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .box {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🌾 Kisan Voice Bot</h1>
+
+    <button id="recordBtn">🎙️ Start Recording</button>
+
+    <p id="status">Ready...</p>
+
+    <div class="box">
+        <h3>👨‍🌾 Farmer:</h3>
+        <p id="farmerText">-</p>
+    </div>
+
+    <div class="box">
+        <h3>🤖 AI:</h3>
+        <p id="aiText">-</p>
+    </div>
+
+    <div class="box">
+        <h3>🌐 Language:</h3>
+        <p id="language">-</p>
+    </div>
+
+    <div class="box">
+        <h3>🔊 Voice Response:</h3>
+        <audio id="replyAudio" controls style="width:100%; display:none;"></audio>
+    </div>
+
+
+<script>
+
+window.addEventListener("DOMContentLoaded", () => {
+
+    console.log("✅ JavaScript loaded");
+
+    let recorder = null;
+    let audioChunks = [];
+    let mediaStream = null;
+
+    const recordBtn = document.getElementById("recordBtn");
+    const statusText = document.getElementById("status");
+
+    if (!recordBtn) {
+        console.error("❌ recordBtn not found");
+        return;
+    }
+
+    console.log("✅ recordBtn found");
+
+    recordBtn.onclick = async function () {
+
+        console.log("🔘 Button clicked");
+
+        // =========================
+        // START RECORDING
+        // =========================
+
+        if (!recorder || recorder.state === "inactive") {
+
+            try {
+
+                console.log("🎤 Requesting microphone...");
+
+                mediaStream =
+                    await navigator.mediaDevices.getUserMedia({
+                        audio: true
+                    });
+
+                console.log("✅ Microphone permission OK");
+
+                let options = {};
+
+                if (MediaRecorder.isTypeSupported("audio/webm")) {
+                    options.mimeType = "audio/webm";
+                }
+
+                recorder = new MediaRecorder(
+                    mediaStream,
+                    options
+                );
+
+                audioChunks = [];
+
+                recorder.ondataavailable = function (event) {
+
+                    if (event.data && event.data.size > 0) {
+
+                        audioChunks.push(event.data);
+
+                        console.log(
+                            "📦 Audio data received:",
+                            event.data.size
+                        );
+                    }
+                };
+
+                recorder.onerror = function (event) {
+
+                    console.error(
+                        "❌ Recorder error:",
+                        event
+                    );
+
+                    statusText.innerText =
+                        "❌ Recording error";
+                };
+
+
+                recorder.onstop = async function () {
+
+                    console.log("⏹️ Recording stopped");
+
+                    statusText.innerText =
+                        "⏳ Processing...";
+
+                    recordBtn.disabled = true;
+
+                    // Create audio blob
+                    const audioBlob = new Blob(
+                        audioChunks,
+                        {
+                            type: recorder.mimeType ||
+                                  "audio/webm"
+                        }
+                    );
+
+                    console.log(
+                        "🎵 Audio size:",
+                        audioBlob.size
+                    );
+
+                    if (audioBlob.size === 0) {
+
+                        statusText.innerText =
+                            "❌ No audio recorded";
+
+                        recordBtn.disabled = false;
+
+                        return;
+                    }
+
+
+                    // =========================
+                    // SEND TO BACKEND
+                    // =========================
+
+                    const formData = new FormData();
+
+                    formData.append(
+                        "file",
+                        audioBlob,
+                        "farmer.webm"
+                    );
+
+                    console.log(
+                        "📤 Sending audio to backend..."
+                    );
+
+                    try {
+
+                        const response = await fetch(
+                            "http://127.0.0.1:8000/voice-chat",
+                            {
+                                method: "POST",
+                                body: formData
+                            }
+                        );
+
+                        console.log(
+                            "📡 Backend status:",
+                            response.status
+                        );
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                "Server error: " +
+                                response.status
+                            );
+                        }
+
+
+                        const data =
+                            await response.json();
+
+                        console.log(
+                            "🤖 BOT RESPONSE:",
+                            data
+                        );
+
+
+                        // =========================
+                        // SHOW FARMER TEXT
+                        // =========================
+
+                        document.getElementById(
+                            "farmerText"
+                        ).innerText =
+                            data.farmer_text || "-";
+
+
+                        // =========================
+                        // SHOW AI RESPONSE
+                        // =========================
+
+                        document.getElementById(
+                            "aiText"
+                        ).innerText =
+                            data.ai_response || "-";
+
+
+                        // =========================
+                        // SHOW LANGUAGE
+                        // =========================
+
+                        document.getElementById(
+                            "language"
+                        ).innerText =
+                            data.language || "-";
+
+
+                        statusText.innerText =
+                            "✅ Response received";
+
+
+                        // =========================
+                        // PLAY AI VOICE
+                        // =========================
+
+                        const replyAudio =
+                            document.getElementById(
+                                "replyAudio"
+                            );
+
+                        replyAudio.src =
+                            "http://127.0.0.1:8000/audio?t=" +
+                            Date.now();
+
+                        replyAudio.style.display =
+                            "block";
+
+                        replyAudio.load();
+
+                        try {
+
+                            await replyAudio.play();
+
+                            console.log(
+                                "🔊 AI voice playing"
+                            );
+
+                        } catch (error) {
+
+                            console.log(
+                                "🔊 Auto-play blocked. " +
+                                "Press Play manually."
+                            );
+                        }
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "❌ BACKEND ERROR:",
+                            error
+                        );
+
+                        statusText.innerText =
+                            "❌ Error: " +
+                            error.message;
+                    }
+
+
+                    recordBtn.disabled = false;
+
+                };
+
+
+                // Start recording
+                recorder.start();
+
+                recordBtn.innerText =
+                    "⏹️ Stop Recording";
+
+                statusText.innerText =
+                    "🎙️ बोलिए...";
+
+                console.log(
+                    "🎙️ Recording started"
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "❌ MICROPHONE ERROR:",
+                    error
+                );
+
+                statusText.innerText =
+                    "❌ Microphone permission required";
+
+            }
+
+        }
+
+
+        // =========================
+        // STOP RECORDING
+        // =========================
+
+        else {
+
+            console.log(
+                "⏹️ Stop button clicked"
+            );
+
+            recorder.stop();
+
+            if (mediaStream) {
+
+                mediaStream
+                    .getTracks()
+                    .forEach(track => {
+                        track.stop();
+                    });
+
+                mediaStream = null;
+            }
+
+            recordBtn.innerText =
+                "🎙️ Start Recording";
+
+            statusText.innerText =
+                "⏳ Recording stopped...";
+        }
+
+    };
+
+});
+
+</script>
+
+</body>
+</html>
