@@ -12,6 +12,7 @@ import cropsRoutes from "./modules/crops/crops.routes.js";
 import pricesRoutes from "./modules/prices/prices.routes.js";
 import listingsRoutes from "./modules/listings/listings.routes.js";
 import voiceRoutes from "./modules/voice/voice.routes.js";
+import profitCalculatorRoutes from "./modules/tools/profitCalculator.routes.js";
 
 async function main() {
   const fastify = Fastify({ logger: true });
@@ -31,6 +32,7 @@ async function main() {
   await fastify.register(pricesRoutes);
   await fastify.register(listingsRoutes);
   await fastify.register(voiceRoutes);
+  await fastify.register(profitCalculatorRoutes);
 
   await fastify.listen({ port: env.port, host: "0.0.0.0" });
 }

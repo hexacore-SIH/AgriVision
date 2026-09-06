@@ -30,7 +30,9 @@
     "admin": "Admin",
     "listings": "My Listings",
     "history": "Price History",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "nearbyMandis": "Nearby Mandis",
+    "profitCalculator": "Profit Calculator"
   },
   "farmer": {
     "dashboardTitle": "Farmer Dashboard",
@@ -70,7 +72,15 @@
     "addMandi": "Add mandi",
     "mandiName": "Mandi name",
     "state": "State",
-    "district": "District"
+    "district": "District",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "status": "Status",
+    "actions": "Actions",
+    "active": "Active",
+    "inactive": "Removed",
+    "removeMandi": "Remove",
+    "restoreMandi": "Restore"
   },
   "voice": {
     "start": "Tap to speak",
@@ -87,5 +97,35 @@
     "KG": "kg",
     "QUINTAL": "quintal",
     "TON": "ton"
+  },
+  "map": {
+    "nearbyTitle": "Nearby Mandis",
+    "mandiHeadHint": "See what other mandis nearby are tracking",
+    "you": "You are here",
+    "distanceAway": "{km} km away",
+    "locating": "Finding your location...",
+    "locationDenied": "Location unavailable - showing all mandis",
+    "viewPrices": "View prices",
+    "noPricesYet": "No prices set yet"
+  },
+  "profit": {
+    "title": "Sell Now or Wait?",
+    "subtitle": "Estimate which is more profitable, based on this mandi's recent price trend",
+    "mandi": "Mandi",
+    "crop": "Crop",
+    "quantity": "Quantity",
+    "unit": "Unit",
+    "waitDays": "Days to wait",
+    "calculate": "Calculate",
+    "sellNow": "Sell now",
+    "waitAndSell": "Wait {days} days",
+    "grossRevenue": "Gross revenue",
+    "commission": "Mandi commission",
+    "storageCost": "Storage cost",
+    "netRevenue": "Net profit",
+    "recommended": "Recommended",
+    "trendNote": "Based on this mandi's price trend over the last 30 days ({trend} per day)",
+    "noHistory": "Not enough price history yet to project a trend - showing today's price for both",
+    "selectPrompt": "Choose a mandi and crop to calculate"
   }
 }

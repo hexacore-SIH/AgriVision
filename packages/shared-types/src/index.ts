@@ -69,6 +69,43 @@ export interface ProcessResult {
   draft_reply_text: string | null;
 }
 
+export interface MandiWithLocation {
+  id: string;
+  name: string;
+  state: string;
+  district: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  isActive: boolean;
+}
+
+export interface NearbyMandi extends MandiWithLocation {
+  distanceKm: number | null;
+}
+
+export interface ProfitScenario {
+  label: "SELL_NOW" | "WAIT";
+  days: number;
+  pricePerUnit: number;
+  grossRevenue: number;
+  commission: number;
+  storageCost: number;
+  netRevenue: number;
+}
+
+export interface ProfitCalculatorResult {
+  cropSlug: string;
+  mandiName: string;
+  quantity: number;
+  unit: Unit;
+  waitDays: number;
+  trendPerDayPerUnit: number;
+  sellNow: ProfitScenario;
+  waitAndSell: ProfitScenario;
+  recommendation: "SELL_NOW" | "WAIT";
+  netDifference: number;
+}
+
 export interface VoiceInteractResponse {
   transcript: string;
   detectedLanguage: string;

@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Mandi" ADD COLUMN     "isActive" BOOLEAN NOT NULL DEFAULT true,
+ADD COLUMN     "latitude" DOUBLE PRECISION,
+ADD COLUMN     "longitude" DOUBLE PRECISION;

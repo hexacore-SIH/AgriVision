@@ -2,13 +2,31 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import type { Locale, Role } from "@agrivision/shared-types";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Grid2 as Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TextField,
+  ThemeProvider,
+  Typography,
+} from "@mui/material";
+import type { Locale, MandiWithLocation, Role } from "@agrivision/shared-types";
 import { ROLES } from "@agrivision/shared-types";
 import { RequireRole } from "@/components/RequireRole";
 import { TopNav } from "@/components/TopNav";
+import { MandiMap } from "@/components/map/MandiMapLoader";
 import { apiJson } from "@/lib/apiClient";
 import { useAppLocale } from "@/lib/LocaleContext";
 import { cropLabel } from "@/lib/cropName";
+import { muiTheme } from "@/lib/muiTheme";
 
 interface AdminUser {
   id: string;
@@ -18,13 +36,6 @@ interface AdminUser {
   mandiId: string | null;
 }
 
-interface MandiOption {
-  id: string;
-  name: string;
-  state: string;
-  district: string | null;
-}
-
 interface CropOption {
   id: string;
   slug: string;
@@ -32,7 +43,7 @@ interface CropOption {
   localNames: Record<string, string>;
 }
 
-function UsersSection({ mandis }: { mandis: MandiOption[] }) {
+function UsersSection({ mandis }: { mandis: MandiWithLocation[] }) {
   const t = useTranslations("admin");
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [pendingRole, setPendingRole] = useState<Record<string, Role>>({});
@@ -116,61 +127,180 @@ function UsersSection({ mandis }: { mandis: MandiOption[] }) {
   );
 }
 
-function MandisSection({ mandis, onChange }: { mandis: MandiOption[]; onChange: () => void }) {
+function MandisSection({
+  mandis,
+  onChange,
+}: {
+  mandis: MandiWithLocation[];
+  onChange: () => void;
+}) {
   const t = useTranslations("admin");
   const [name, setName] = useState("");
   const [state, setState] = useState("");
   const [district, setDistrict] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [busy, setBusy] = useState(false);
 
   async function handleAdd(e: React.FormEvent) {
     e.preventDefault();
     if (!name || !state) return;
-    await apiJson("/mandis", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, state, district: district || undefined }),
-    });
-    setName("");
-    setState("");
-    setDistrict("");
+    setBusy(true);
+    try {
+      await apiJson("/mandis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          state,
+          district: district || undefined,
+          latitude: latitude ? Number(latitude) : undefined,
+          longitude: longitude ? Number(longitude) : undefined,
+        }),
+      });
+      setName("");
+      setState("");
+      setDistrict("");
+      setLatitude("");
+      setLongitude("");
+      onChange();
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleRemove(id: string) {
+    await apiJson(`/mandis/${id}`, { method: "DELETE" });
     onChange();
   }
 
+  async function handleRestore(id: string) {
+    await apiJson(`/mandis/${id}/restore`, { method: "POST" });
+    onChange();
+  }
+
+  const activeMandis = mandis.filter((m) => m.isActive);
+
   return (
-    <section>
-      <h2 className="mb-3 font-medium text-stone-800">{t("mandisTitle")}</h2>
-      <div className="mb-3 space-y-2">
-        {mandis.map((m) => (
-          <div key={m.id} className="rounded-xl border border-stone-200 bg-white p-3 text-sm">
-            {m.name} — {m.district ? `${m.district}, ` : ""}
-            {m.state}
-          </div>
-        ))}
-      </div>
-      <form onSubmit={handleAdd} className="flex flex-wrap gap-2">
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder={t("mandiName")}
-          className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
-        />
-        <input
-          value={state}
-          onChange={(e) => setState(e.target.value)}
-          placeholder={t("state")}
-          className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
-        />
-        <input
-          value={district}
-          onChange={(e) => setDistrict(e.target.value)}
-          placeholder={t("district")}
-          className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
-        />
-        <button className="rounded-lg bg-green-600 px-3 py-2 text-sm font-medium text-white">
-          {t("addMandi")}
-        </button>
-      </form>
-    </section>
+    <ThemeProvider theme={muiTheme}>
+      <section>
+        <Typography variant="h6" fontWeight={600} gutterBottom>
+          {t("mandisTitle")}
+        </Typography>
+
+        <Card variant="outlined" sx={{ mb: 2 }}>
+          <MandiMap mandis={activeMandis} height={280} />
+        </Card>
+
+        <Card variant="outlined" sx={{ mb: 2 }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>{t("mandiName")}</TableCell>
+                <TableCell>{t("state")}</TableCell>
+                <TableCell>{t("status")}</TableCell>
+                <TableCell align="right">{t("actions")}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {mandis.map((m) => (
+                <TableRow key={m.id}>
+                  <TableCell>{m.name}</TableCell>
+                  <TableCell>
+                    {m.district ? `${m.district}, ` : ""}
+                    {m.state}
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      label={m.isActive ? t("active") : t("inactive")}
+                      color={m.isActive ? "success" : "default"}
+                      size="small"
+                    />
+                  </TableCell>
+                  <TableCell align="right">
+                    {m.isActive ? (
+                      <Button size="small" color="error" onClick={() => handleRemove(m.id)}>
+                        {t("removeMandi")}
+                      </Button>
+                    ) : (
+                      <Button size="small" onClick={() => handleRestore(m.id)}>
+                        {t("restoreMandi")}
+                      </Button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Card>
+
+        <Card variant="outlined">
+          <CardContent>
+            <Box component="form" onSubmit={handleAdd}>
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12, sm: 4 }}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    label={t("mandiName")}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </Grid>
+                <Grid size={{ xs: 6, sm: 4 }}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    label={t("state")}
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                  />
+                </Grid>
+                <Grid size={{ xs: 6, sm: 4 }}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    label={t("district")}
+                    value={district}
+                    onChange={(e) => setDistrict(e.target.value)}
+                  />
+                </Grid>
+                <Grid size={{ xs: 6, sm: 4 }}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    type="number"
+                    label={t("latitude")}
+                    value={latitude}
+                    onChange={(e) => setLatitude(e.target.value)}
+                  />
+                </Grid>
+                <Grid size={{ xs: 6, sm: 4 }}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    type="number"
+                    label={t("longitude")}
+                    value={longitude}
+                    onChange={(e) => setLongitude(e.target.value)}
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, sm: 4 }} display="flex" alignItems="center">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    disabled={busy || !name || !state}
+                  >
+                    {t("addMandi")}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Box>
+          </CardContent>
+        </Card>
+      </section>
+    </ThemeProvider>
   );
 }
 
@@ -200,10 +330,10 @@ function CropsSection() {
 
 function AdminContent() {
   const t = useTranslations("admin");
-  const [mandis, setMandis] = useState<MandiOption[]>([]);
+  const [mandis, setMandis] = useState<MandiWithLocation[]>([]);
 
   function loadMandis() {
-    apiJson<MandiOption[]>("/mandis").then(setMandis).catch(() => undefined);
+    apiJson<MandiWithLocation[]>("/mandis?includeInactive=true").then(setMandis).catch(() => undefined);
   }
 
   useEffect(loadMandis, []);

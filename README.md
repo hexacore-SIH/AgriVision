@@ -53,7 +53,9 @@ cd ..
 echo 'NEXT_PUBLIC_API_URL=http://localhost:4000' > frontend/.env.local
 ```
 
-The seed script creates three demo accounts (phone / role):
+The seed script creates three demo accounts (phone / role) and four mandis across Maharashtra
+(Pune, Nashik, Solapur, Ahmednagar) with real coordinates, so the map and nearest-mandi features
+have something to show:
 
 | Phone        | Role       |
 |--------------|------------|
@@ -95,6 +97,24 @@ cd frontend && npm run dev       # http://localhost:3000
 ```
 
 Then open http://localhost:3000.
+
+## Maps and the profit calculator
+
+- **Nearby Mandis** (`/farmer/mandis` for farmers, `/mandi/nearby` for mandi heads) shows a
+  Leaflet + OpenStreetMap map (no API key needed) centered on the browser's geolocation, with
+  every mandi plotted and sorted by distance (`GET /mandis/nearest`). Selecting a mandi loads its
+  live price board.
+- **Admin → Mandis** shows the same map plus a table to add a mandi (with optional
+  latitude/longitude) and remove/restore one. "Remove" is a soft delete (`DELETE /mandis/:id`
+  sets `isActive: false`) — existing price history and listings are never destroyed, the mandi
+  just stops appearing to farmers and mandi heads until an admin restores it.
+- **Profit Calculator** (`/farmer/profit-calculator`) estimates sell-now vs. wait-N-days net
+  profit for a crop at a mandi, using the mandi's real price history for a simple trend
+  projection, minus a configurable commission rate and storage cost
+  (`backend/src/lib/profitConstants.ts`). It's a decision-support estimate, not a guarantee —
+  there's no live weather, buyer or transport data behind it.
+- These three surfaces are built with Material UI (`@mui/material`); the rest of the app
+  (auth, voice recorder, drag-and-drop price list) stays on the existing Tailwind styling.
 
 ## Notes
 

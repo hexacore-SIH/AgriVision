@@ -46,6 +46,13 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
     window.localStorage.setItem(STORAGE_KEY, next);
   }, []);
 
+  useEffect(() => {
+    // <html lang> is a real accessibility signal (screen readers, browser
+    // translate prompts) - it starts as the server's static default and
+    // needs to track whichever locale the user actually lands on.
+    document.documentElement.lang = locale;
+  }, [locale]);
+
   const messages = useMemo(() => MESSAGES[locale], [locale]);
 
   return (

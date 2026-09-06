@@ -33,6 +33,12 @@ export function TopNav() {
               <Link href="/farmer/listings" className="text-stone-600 hover:text-stone-900">
                 {t("nav.listings")}
               </Link>
+              <Link href="/farmer/mandis" className="text-stone-600 hover:text-stone-900">
+                {t("nav.nearbyMandis")}
+              </Link>
+              <Link href="/farmer/profit-calculator" className="text-stone-600 hover:text-stone-900">
+                {t("nav.profitCalculator")}
+              </Link>
             </>
           )}
           {user?.role === "MANDI_HEAD" && (
@@ -42,6 +48,9 @@ export function TopNav() {
               </Link>
               <Link href="/mandi/history" className="text-stone-600 hover:text-stone-900">
                 {t("nav.history")}
+              </Link>
+              <Link href="/mandi/nearby" className="text-stone-600 hover:text-stone-900">
+                {t("nav.nearbyMandis")}
               </Link>
             </>
           )}
