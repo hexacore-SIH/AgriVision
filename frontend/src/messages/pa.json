@@ -1,0 +1,91 @@
+{
+  "common": {
+    "appName": "ਐਗਰੀਵਿਜ਼ਨ",
+    "save": "ਸੇਵ ਕਰੋ",
+    "cancel": "ਰੱਦ ਕਰੋ",
+    "loading": "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ...",
+    "language": "ਭਾਸ਼ਾ",
+    "logout": "ਲੌਗਆਊਟ",
+    "back": "ਵਾਪਸ",
+    "submit": "ਜਮ੍ਹਾਂ ਕਰੋ",
+    "close": "ਬੰਦ ਕਰੋ"
+  },
+  "auth": {
+    "title": "ਐਗਰੀਵਿਜ਼ਨ ਵਿੱਚ ਲੌਗਇਨ ਕਰੋ",
+    "subtitle": "ਜਾਰੀ ਰੱਖਣ ਲਈ ਆਪਣਾ ਫ਼ੋਨ ਨੰਬਰ ਦਰਜ ਕਰੋ",
+    "phoneLabel": "ਫ਼ੋਨ ਨੰਬਰ",
+    "phonePlaceholder": "10 ਅੰਕਾਂ ਦਾ ਫ਼ੋਨ ਨੰਬਰ",
+    "sendOtp": "OTP ਭੇਜੋ",
+    "otpLabel": "OTP ਦਰਜ ਕਰੋ",
+    "otpPlaceholder": "6 ਅੰਕਾਂ ਦਾ ਕੋਡ",
+    "verify": "ਤਸਦੀਕ ਕਰੋ ਅਤੇ ਜਾਰੀ ਰੱਖੋ",
+    "devOtpHint": "ਡੇਵ ਮੋਡ OTP: {code}",
+    "invalidPhone": "ਕਿਰਪਾ ਕਰਕੇ ਸਹੀ ਫ਼ੋਨ ਨੰਬਰ ਦਰਜ ਕਰੋ",
+    "invalidOtp": "ਗਲਤ ਜਾਂ ਮਿਆਦ ਪੁੱਗਿਆ ਕੋਡ",
+    "changeNumber": "ਨੰਬਰ ਬਦਲੋ"
+  },
+  "nav": {
+    "farmer": "ਕਿਸਾਨ",
+    "mandi": "ਮੰਡੀ ਮੁਖੀ",
+    "admin": "ਐਡਮਿਨ",
+    "listings": "ਮੇਰੀਆਂ ਸੂਚੀਆਂ",
+    "history": "ਭਾਅ ਇਤਿਹਾਸ",
+    "dashboard": "ਡੈਸ਼ਬੋਰਡ"
+  },
+  "farmer": {
+    "dashboardTitle": "ਕਿਸਾਨ ਡੈਸ਼ਬੋਰਡ",
+    "voiceHint": "ਮਾਈਕ ਦਬਾ ਕੇ ਬੋਲੋ - ਭਾਅ ਪੁੱਛੋ ਜਾਂ ਦੱਸੋ ਕਿ ਤੁਹਾਡੇ ਕੋਲ ਵੇਚਣ ਲਈ ਕੀ ਹੈ",
+    "myListings": "ਮੇਰੀਆਂ ਸੂਚੀਆਂ",
+    "noListings": "ਹਾਲੇ ਕੋਈ ਸੂਚੀ ਨਹੀਂ ਹੈ",
+    "createListing": "ਨਵੀਂ ਸੂਚੀ ਬਣਾਓ",
+    "crop": "ਫਸਲ",
+    "quantity": "ਮਾਤਰਾ",
+    "unit": "ਇਕਾਈ",
+    "askingPrice": "ਪ੍ਰਤੀ ਇਕਾਈ ਲੋੜੀਂਦਾ ਭਾਅ (ਵਿਕਲਪਿਕ)",
+    "createdOn": "{date} ਨੂੰ ਬਣਾਇਆ ਗਿਆ",
+    "status_OPEN": "ਖੁੱਲ੍ਹਾ",
+    "status_SOLD": "ਵਿਕ ਗਿਆ",
+    "status_CANCELLED": "ਰੱਦ"
+  },
+  "mandi": {
+    "dashboardTitle": "ਮੰਡੀ ਭਾਅ ਪ੍ਰਬੰਧਕ",
+    "dragHint": "ਕ੍ਰਮ ਬਦਲਣ ਲਈ ਖਿੱਚੋ। ਭਾਅ ਬਦਲਣ ਲਈ ਉਸ ਉੱਤੇ ਟੈਪ ਕਰੋ।",
+    "addCrop": "ਫਸਲ ਸ਼ਾਮਲ ਕਰੋ",
+    "currentPrice": "ਮੌਜੂਦਾ ਭਾਅ",
+    "updatePrice": "ਅਪਡੇਟ ਕਰੋ",
+    "lastUpdated": "{time} ਨੂੰ ਅਪਡੇਟ ਕੀਤਾ ਗਿਆ",
+    "noPriceYet": "ਹਾਲੇ ਭਾਅ ਸੈੱਟ ਨਹੀਂ ਹੈ",
+    "priceHistoryTitle": "ਭਾਅ ਇਤਿਹਾਸ",
+    "selectCrop": "ਫਸਲ ਚੁਣੋ",
+    "voicePanelTitle": "ਆਵਾਜ਼ ਨਾਲ ਭਾਅ ਅਪਡੇਟ ਕਰੋ"
+  },
+  "admin": {
+    "dashboardTitle": "ਐਡਮਿਨ ਪੈਨਲ",
+    "usersTitle": "ਵਰਤੋਂਕਾਰ",
+    "mandisTitle": "ਮੰਡੀਆਂ",
+    "cropsTitle": "ਫਸਲਾਂ",
+    "promote": "ਤਰੱਕੀ ਦਿਓ",
+    "role": "ਭੂਮਿਕਾ",
+    "assignMandi": "ਮੰਡੀ ਸੌਂਪੋ",
+    "addMandi": "ਮੰਡੀ ਸ਼ਾਮਲ ਕਰੋ",
+    "mandiName": "ਮੰਡੀ ਦਾ ਨਾਮ",
+    "state": "ਰਾਜ",
+    "district": "ਜ਼ਿਲ੍ਹਾ"
+  },
+  "voice": {
+    "start": "ਬੋਲਣ ਲਈ ਟੈਪ ਕਰੋ",
+    "stop": "ਰੋਕੋ",
+    "recording": "ਸੁਣ ਰਿਹਾ ਹੈ...",
+    "processing": "ਪ੍ਰੋਸੈਸ ਹੋ ਰਿਹਾ ਹੈ...",
+    "transcript": "ਤੁਸੀਂ ਕਿਹਾ",
+    "response": "ਜਵਾਬ",
+    "playAgain": "ਦੁਬਾਰਾ ਸੁਣੋ",
+    "micError": "ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਦੀ ਇਜਾਜ਼ਤ ਲੋੜੀਂਦੀ ਹੈ",
+    "noAudio": "ਕੋਈ ਆਵਾਜ਼ ਰਿਕਾਰਡ ਨਹੀਂ ਹੋਈ, ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ"
+  },
+  "units": {
+    "KG": "ਕਿਲੋ",
+    "QUINTAL": "ਕੁਇੰਟਲ",
+    "TON": "ਟਨ"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "agrivision",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "frontend",
+    "backend",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev -w backend",
+    "dev:frontend": "npm run dev -w frontend",
+    "dev:llm": "node scripts/start-llm.mjs",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:wait": "node scripts/wait-for-postgres.mjs",
+    "all": "npm run db:up && npm run db:wait && concurrently -n db,backend,frontend,llm -c gray,blue,green,yellow --kill-others-on-fail \"docker compose logs -f postgres\" \"npm:dev:backend\" \"npm:dev:frontend\" \"npm:dev:llm\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

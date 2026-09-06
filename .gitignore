@@ -1,7 +1,16 @@
 .env
+.env.local
+.env.*.local
 venv/
+.venv/
 __pycache__/
 *.pyc
 *.wav
 *.webm
 *.m4a
+node_modules/
+dist/
+build/
+.next/
+*.tsbuildinfo
+.turbo/

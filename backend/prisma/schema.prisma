@@ -1,0 +1,154 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  FARMER
+  MANDI_HEAD
+  ADMIN
+}
+
+enum Language {
+  hi_IN
+  mr_IN
+  pa_IN
+  gu_IN
+  en_IN
+}
+
+enum Unit {
+  KG
+  QUINTAL
+  TON
+}
+
+enum ListingStatus {
+  OPEN
+  SOLD
+  CANCELLED
+}
+
+model User {
+  id                String    @id @default(cuid())
+  phone             String    @unique
+  name              String?
+  role              Role      @default(FARMER)
+  preferredLanguage Language  @default(hi_IN)
+  mandiId           String?
+  mandi             Mandi?    @relation(fields: [mandiId], references: [id])
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  listings          Listing[]
+  priceUpdates      MandiPrice[]           @relation("PriceUpdatedBy")
+  refreshTokens     RefreshToken[]
+  voiceLogs         VoiceInteractionLog[]
+}
+
+model OtpCode {
+  id         String    @id @default(cuid())
+  phone      String
+  codeHash   String
+  expiresAt  DateTime
+  attempts   Int       @default(0)
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([phone, expiresAt])
+}
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model Mandi {
+  id        String   @id @default(cuid())
+  name      String
+  state     String
+  district  String?
+  createdAt DateTime @default(now())
+
+  users       User[]
+  mandiCrops  MandiCrop[]
+  mandiPrices MandiPrice[]
+}
+
+model Crop {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  defaultUnit Unit     @default(KG)
+  localNames  Json
+  createdAt   DateTime @default(now())
+
+  mandiCrops  MandiCrop[]
+  mandiPrices MandiPrice[]
+  listings    Listing[]
+}
+
+model MandiCrop {
+  id           String  @id @default(cuid())
+  mandiId      String
+  mandi        Mandi   @relation(fields: [mandiId], references: [id])
+  cropId       String
+  crop         Crop    @relation(fields: [cropId], references: [id])
+  displayOrder Int
+  isActive     Boolean @default(true)
+
+  @@unique([mandiId, cropId])
+  @@index([mandiId, displayOrder])
+}
+
+model MandiPrice {
+  id           String   @id @default(cuid())
+  mandiId      String
+  mandi        Mandi    @relation(fields: [mandiId], references: [id])
+  cropId       String
+  crop         Crop     @relation(fields: [cropId], references: [id])
+  pricePerUnit Decimal  @db.Decimal(10, 2)
+  unit         Unit
+  updatedById  String
+  updatedBy    User     @relation("PriceUpdatedBy", fields: [updatedById], references: [id])
+  createdAt    DateTime @default(now())
+
+  @@index([mandiId, cropId, createdAt])
+}
+
+model Listing {
+  id                 String        @id @default(cuid())
+  farmerId           String
+  farmer             User          @relation(fields: [farmerId], references: [id])
+  cropId             String
+  crop               Crop          @relation(fields: [cropId], references: [id])
+  quantity           Decimal       @db.Decimal(10, 2)
+  unit               Unit
+  askingPricePerUnit Decimal?      @db.Decimal(10, 2)
+  mandiId            String?
+  status             ListingStatus @default(OPEN)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  @@index([farmerId, status])
+}
+
+model VoiceInteractionLog {
+  id               String   @id @default(cuid())
+  userId           String?
+  user             User?    @relation(fields: [userId], references: [id])
+  transcript       String
+  detectedLanguage String
+  intent           String
+  entities         Json
+  finalReplyText   String
+  createdAt        DateTime @default(now())
+}

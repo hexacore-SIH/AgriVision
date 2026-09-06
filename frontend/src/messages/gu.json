@@ -1,0 +1,91 @@
+{
+  "common": {
+    "appName": "એગ્રીવિઝન",
+    "save": "સેવ કરો",
+    "cancel": "રદ કરો",
+    "loading": "લોડ થઈ રહ્યું છે...",
+    "language": "ભાષા",
+    "logout": "લોગઆઉટ",
+    "back": "પાછળ",
+    "submit": "સબમિટ કરો",
+    "close": "બંધ કરો"
+  },
+  "auth": {
+    "title": "એગ્રીવિઝનમાં લોગિન કરો",
+    "subtitle": "ચાલુ રાખવા માટે તમારો ફોન નંબર દાખલ કરો",
+    "phoneLabel": "ફોન નંબર",
+    "phonePlaceholder": "10 અંકનો ફોન નંબર",
+    "sendOtp": "OTP મોકલો",
+    "otpLabel": "OTP દાખલ કરો",
+    "otpPlaceholder": "6 અંકનો કોડ",
+    "verify": "ચકાસો અને ચાલુ રાખો",
+    "devOtpHint": "ડેવ મોડ OTP: {code}",
+    "invalidPhone": "કૃપા કરીને યોગ્ય ફોન નંબર દાખલ કરો",
+    "invalidOtp": "ખોટો અથવા સમય પૂરો થયેલો કોડ",
+    "changeNumber": "નંબર બદલો"
+  },
+  "nav": {
+    "farmer": "ખેડૂત",
+    "mandi": "મંડી વડા",
+    "admin": "એડમિન",
+    "listings": "મારી યાદીઓ",
+    "history": "ભાવ ઇતિહાસ",
+    "dashboard": "ડેશબોર્ડ"
+  },
+  "farmer": {
+    "dashboardTitle": "ખેડૂત ડેશબોર્ડ",
+    "voiceHint": "માઈક દબાવીને બોલો - ભાવ પૂછો અથવા જણાવો કે તમારી પાસે વેચવા માટે શું છે",
+    "myListings": "મારી યાદીઓ",
+    "noListings": "હજુ કોઈ યાદી નથી",
+    "createListing": "નવી યાદી બનાવો",
+    "crop": "પાક",
+    "quantity": "જથ્થો",
+    "unit": "એકમ",
+    "askingPrice": "પ્રતિ એકમ ઇચ્છિત ભાવ (વૈકલ્પિક)",
+    "createdOn": "{date} ના રોજ બનાવ્યું",
+    "status_OPEN": "ખુલ્લું",
+    "status_SOLD": "વેચાયું",
+    "status_CANCELLED": "રદ થયું"
+  },
+  "mandi": {
+    "dashboardTitle": "મંડી ભાવ સંચાલક",
+    "dragHint": "ક્રમ બદલવા માટે ખેંચો. ભાવ બદલવા માટે તેના પર ટેપ કરો.",
+    "addCrop": "પાક ઉમેરો",
+    "currentPrice": "હાલનો ભાવ",
+    "updatePrice": "અપડેટ કરો",
+    "lastUpdated": "{time} ના રોજ અપડેટ થયું",
+    "noPriceYet": "હજુ ભાવ સેટ નથી",
+    "priceHistoryTitle": "ભાવ ઇતિહાસ",
+    "selectCrop": "પાક પસંદ કરો",
+    "voicePanelTitle": "અવાજ દ્વારા ભાવ અપડેટ કરો"
+  },
+  "admin": {
+    "dashboardTitle": "એડમિન પેનલ",
+    "usersTitle": "વપરાશકર્તાઓ",
+    "mandisTitle": "મંડીઓ",
+    "cropsTitle": "પાકો",
+    "promote": "પ્રમોટ કરો",
+    "role": "ભૂમિકા",
+    "assignMandi": "મંડી સોંપો",
+    "addMandi": "મંડી ઉમેરો",
+    "mandiName": "મંડીનું નામ",
+    "state": "રાજ્ય",
+    "district": "જિલ્લો"
+  },
+  "voice": {
+    "start": "બોલવા માટે ટેપ કરો",
+    "stop": "રોકો",
+    "recording": "સાંભળી રહ્યું છે...",
+    "processing": "પ્રક્રિયા ચાલુ છે...",
+    "transcript": "તમે કહ્યું",
+    "response": "જવાબ",
+    "playAgain": "ફરીથી સાંભળો",
+    "micError": "માઈક્રોફોનની પરવાનગી જરૂરી છે",
+    "noAudio": "કોઈ અવાજ રેકોર્ડ થયો નથી, કૃપા કરીને ફરી પ્રયાસ કરો"
+  },
+  "units": {
+    "KG": "કિલો",
+    "QUINTAL": "ક્વિન્ટલ",
+    "TON": "ટન"
+  }
+}

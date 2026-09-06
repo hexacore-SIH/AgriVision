@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: agrivision-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: agrivision
+      POSTGRES_PASSWORD: agrivision
+      POSTGRES_DB: agrivision
+    ports:
+      - "5432:5432"
+    volumes:
+      - agrivision_pg_data:/var/lib/postgresql/data
+
+volumes:
+  agrivision_pg_data:

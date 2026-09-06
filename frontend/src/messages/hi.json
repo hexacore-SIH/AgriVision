@@ -1,0 +1,91 @@
+{
+  "common": {
+    "appName": "एग्रीविज़न",
+    "save": "सेव करें",
+    "cancel": "रद्द करें",
+    "loading": "लोड हो रहा है...",
+    "language": "भाषा",
+    "logout": "लॉगआउट",
+    "back": "वापस",
+    "submit": "जमा करें",
+    "close": "बंद करें"
+  },
+  "auth": {
+    "title": "एग्रीविज़न में लॉगिन करें",
+    "subtitle": "जारी रखने के लिए अपना फ़ोन नंबर डालें",
+    "phoneLabel": "फ़ोन नंबर",
+    "phonePlaceholder": "10 अंकों का फ़ोन नंबर",
+    "sendOtp": "OTP भेजें",
+    "otpLabel": "OTP दर्ज करें",
+    "otpPlaceholder": "6 अंकों का कोड",
+    "verify": "सत्यापित करें और जारी रखें",
+    "devOtpHint": "डेव मोड OTP: {code}",
+    "invalidPhone": "कृपया सही फ़ोन नंबर डालें",
+    "invalidOtp": "गलत या समय-सीमा समाप्त कोड",
+    "changeNumber": "नंबर बदलें"
+  },
+  "nav": {
+    "farmer": "किसान",
+    "mandi": "मंडी प्रमुख",
+    "admin": "एडमिन",
+    "listings": "मेरी सूचियां",
+    "history": "भाव इतिहास",
+    "dashboard": "डैशबोर्ड"
+  },
+  "farmer": {
+    "dashboardTitle": "किसान डैशबोर्ड",
+    "voiceHint": "माइक दबाकर बोलें - भाव पूछें या बताएं कि आपके पास बेचने के लिए क्या है",
+    "myListings": "मेरी सूचियां",
+    "noListings": "अभी कोई सूची नहीं है",
+    "createListing": "नई सूची बनाएं",
+    "crop": "फसल",
+    "quantity": "मात्रा",
+    "unit": "इकाई",
+    "askingPrice": "प्रति इकाई अपेक्षित भाव (वैकल्पिक)",
+    "createdOn": "{date} को बनाया गया",
+    "status_OPEN": "खुला",
+    "status_SOLD": "बिक गया",
+    "status_CANCELLED": "रद्द"
+  },
+  "mandi": {
+    "dashboardTitle": "मंडी भाव प्रबंधक",
+    "dragHint": "क्रम बदलने के लिए खींचें। भाव बदलने के लिए उस पर टैप करें।",
+    "addCrop": "फसल जोड़ें",
+    "currentPrice": "वर्तमान भाव",
+    "updatePrice": "अपडेट करें",
+    "lastUpdated": "{time} को अपडेट किया गया",
+    "noPriceYet": "अभी भाव सेट नहीं है",
+    "priceHistoryTitle": "भाव इतिहास",
+    "selectCrop": "फसल चुनें",
+    "voicePanelTitle": "आवाज़ से भाव अपडेट करें"
+  },
+  "admin": {
+    "dashboardTitle": "एडमिन पैनल",
+    "usersTitle": "उपयोगकर्ता",
+    "mandisTitle": "मंडियां",
+    "cropsTitle": "फसलें",
+    "promote": "पदोन्नत करें",
+    "role": "भूमिका",
+    "assignMandi": "मंडी सौंपें",
+    "addMandi": "मंडी जोड़ें",
+    "mandiName": "मंडी का नाम",
+    "state": "राज्य",
+    "district": "जिला"
+  },
+  "voice": {
+    "start": "बोलने के लिए टैप करें",
+    "stop": "रोकें",
+    "recording": "सुन रहा है...",
+    "processing": "प्रोसेस हो रहा है...",
+    "transcript": "आपने कहा",
+    "response": "जवाब",
+    "playAgain": "फिर से सुनें",
+    "micError": "माइक्रोफ़ोन की अनुमति आवश्यक है",
+    "noAudio": "कोई आवाज़ रिकॉर्ड नहीं हुई, कृपया फिर से कोशिश करें"
+  },
+  "units": {
+    "KG": "किलो",
+    "QUINTAL": "क्विंटल",
+    "TON": "टन"
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "common": {
+    "appName": "AgriVision",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "language": "Language",
+    "logout": "Logout",
+    "back": "Back",
+    "submit": "Submit",
+    "close": "Close"
+  },
+  "auth": {
+    "title": "Login to AgriVision",
+    "subtitle": "Enter your phone number to continue",
+    "phoneLabel": "Phone number",
+    "phonePlaceholder": "10-digit phone number",
+    "sendOtp": "Send OTP",
+    "otpLabel": "Enter OTP",
+    "otpPlaceholder": "6-digit code",
+    "verify": "Verify & Continue",
+    "devOtpHint": "Dev mode OTP: {code}",
+    "invalidPhone": "Please enter a valid phone number",
+    "invalidOtp": "Invalid or expired code",
+    "changeNumber": "Change number"
+  },
+  "nav": {
+    "farmer": "Farmer",
+    "mandi": "Mandi Head",
+    "admin": "Admin",
+    "listings": "My Listings",
+    "history": "Price History",
+    "dashboard": "Dashboard"
+  },
+  "farmer": {
+    "dashboardTitle": "Farmer Dashboard",
+    "voiceHint": "Tap the mic and speak - ask a price, or say what you have to sell",
+    "myListings": "My Listings",
+    "noListings": "No listings yet",
+    "createListing": "Create a listing",
+    "crop": "Crop",
+    "quantity": "Quantity",
+    "unit": "Unit",
+    "askingPrice": "Asking price per unit (optional)",
+    "createdOn": "Created on {date}",
+    "status_OPEN": "Open",
+    "status_SOLD": "Sold",
+    "status_CANCELLED": "Cancelled"
+  },
+  "mandi": {
+    "dashboardTitle": "Mandi Price Manager",
+    "dragHint": "Drag to reorder. Tap a price to edit it.",
+    "addCrop": "Add crop",
+    "currentPrice": "Current price",
+    "updatePrice": "Update",
+    "lastUpdated": "Updated {time}",
+    "noPriceYet": "No price set",
+    "priceHistoryTitle": "Price History",
+    "selectCrop": "Select a crop",
+    "voicePanelTitle": "Update price by voice"
+  },
+  "admin": {
+    "dashboardTitle": "Admin Panel",
+    "usersTitle": "Users",
+    "mandisTitle": "Mandis",
+    "cropsTitle": "Crops",
+    "promote": "Promote",
+    "role": "Role",
+    "assignMandi": "Assign mandi",
+    "addMandi": "Add mandi",
+    "mandiName": "Mandi name",
+    "state": "State",
+    "district": "District"
+  },
+  "voice": {
+    "start": "Tap to speak",
+    "stop": "Stop",
+    "recording": "Listening...",
+    "processing": "Processing...",
+    "transcript": "You said",
+    "response": "Response",
+    "playAgain": "Play again",
+    "micError": "Microphone permission is required",
+    "noAudio": "No audio recorded, please try again"
+  },
+  "units": {
+    "KG": "kg",
+    "QUINTAL": "quintal",
+    "TON": "ton"
+  }
+}

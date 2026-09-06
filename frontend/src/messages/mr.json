@@ -1,0 +1,91 @@
+{
+  "common": {
+    "appName": "अ‍ॅग्रीव्हिजन",
+    "save": "जतन करा",
+    "cancel": "रद्द करा",
+    "loading": "लोड होत आहे...",
+    "language": "भाषा",
+    "logout": "लॉगआउट",
+    "back": "मागे",
+    "submit": "सबमिट करा",
+    "close": "बंद करा"
+  },
+  "auth": {
+    "title": "अ‍ॅग्रीव्हिजन मध्ये लॉगिन करा",
+    "subtitle": "सुरू ठेवण्यासाठी तुमचा फोन नंबर टाका",
+    "phoneLabel": "फोन नंबर",
+    "phonePlaceholder": "10 अंकी फोन नंबर",
+    "sendOtp": "OTP पाठवा",
+    "otpLabel": "OTP टाका",
+    "otpPlaceholder": "6 अंकी कोड",
+    "verify": "पडताळणी करा आणि सुरू ठेवा",
+    "devOtpHint": "डेव्ह मोड OTP: {code}",
+    "invalidPhone": "कृपया योग्य फोन नंबर टाका",
+    "invalidOtp": "चुकीचा किंवा कालबाह्य कोड",
+    "changeNumber": "नंबर बदला"
+  },
+  "nav": {
+    "farmer": "शेतकरी",
+    "mandi": "मंडई प्रमुख",
+    "admin": "अ‍ॅडमिन",
+    "listings": "माझ्या याद्या",
+    "history": "भाव इतिहास",
+    "dashboard": "डॅशबोर्ड"
+  },
+  "farmer": {
+    "dashboardTitle": "शेतकरी डॅशबोर्ड",
+    "voiceHint": "माईक दाबून बोला - भाव विचारा किंवा तुमच्याकडे विकण्यासाठी काय आहे ते सांगा",
+    "myListings": "माझ्या याद्या",
+    "noListings": "अजून कोणतीही यादी नाही",
+    "createListing": "नवीन यादी तयार करा",
+    "crop": "पीक",
+    "quantity": "प्रमाण",
+    "unit": "एकक",
+    "askingPrice": "प्रति एकक अपेक्षित भाव (ऐच्छिक)",
+    "createdOn": "{date} रोजी तयार केले",
+    "status_OPEN": "खुले",
+    "status_SOLD": "विकले",
+    "status_CANCELLED": "रद्द"
+  },
+  "mandi": {
+    "dashboardTitle": "मंडई भाव व्यवस्थापक",
+    "dragHint": "क्रम बदलण्यासाठी ओढा. भाव बदलण्यासाठी त्यावर टॅप करा.",
+    "addCrop": "पीक जोडा",
+    "currentPrice": "सध्याचा भाव",
+    "updatePrice": "अपडेट करा",
+    "lastUpdated": "{time} रोजी अपडेट केले",
+    "noPriceYet": "अजून भाव सेट नाही",
+    "priceHistoryTitle": "भाव इतिहास",
+    "selectCrop": "पीक निवडा",
+    "voicePanelTitle": "आवाजाने भाव अपडेट करा"
+  },
+  "admin": {
+    "dashboardTitle": "अ‍ॅडमिन पॅनेल",
+    "usersTitle": "वापरकर्ते",
+    "mandisTitle": "मंडया",
+    "cropsTitle": "पिके",
+    "promote": "पदोन्नती द्या",
+    "role": "भूमिका",
+    "assignMandi": "मंडई नेमून द्या",
+    "addMandi": "मंडई जोडा",
+    "mandiName": "मंडईचे नाव",
+    "state": "राज्य",
+    "district": "जिल्हा"
+  },
+  "voice": {
+    "start": "बोलण्यासाठी टॅप करा",
+    "stop": "थांबवा",
+    "recording": "ऐकत आहे...",
+    "processing": "प्रक्रिया सुरू आहे...",
+    "transcript": "तुम्ही म्हणालात",
+    "response": "उत्तर",
+    "playAgain": "पुन्हा ऐका",
+    "micError": "मायक्रोफोनची परवानगी आवश्यक आहे",
+    "noAudio": "आवाज रेकॉर्ड झाला नाही, कृपया पुन्हा प्रयत्न करा"
+  },
+  "units": {
+    "KG": "किलो",
+    "QUINTAL": "क्विंटल",
+    "TON": "टन"
+  }
+}
