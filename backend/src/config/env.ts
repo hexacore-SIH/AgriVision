@@ -15,7 +15,11 @@ export const env = {
   jwtAccessSecret: required("JWT_ACCESS_SECRET"),
   jwtRefreshSecret: required("JWT_REFRESH_SECRET"),
   internalApiKey: required("INTERNAL_API_KEY"),
-  llmServiceUrl: process.env.LLM_SERVICE_URL ?? "http://localhost:8000",
+  llmServiceUrl: process.env.LLM_SERVICE_URL
+    ? (process.env.LLM_SERVICE_URL.startsWith("http")
+        ? process.env.LLM_SERVICE_URL
+        : `http://${process.env.LLM_SERVICE_URL}`)
+    : "http://localhost:8000",
   frontendOrigin: process.env.FRONTEND_ORIGIN ?? "http://localhost:3000",
 };
 

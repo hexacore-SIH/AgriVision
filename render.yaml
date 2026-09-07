@@ -1,0 +1,51 @@
+databases:
+  - name: agrivision-db
+    databaseName: agrivision
+    user: agrivision
+    plan: free
+
+services:
+  # 1. Python LLM Microservice (Sarvam AI wrapper)
+  - type: web
+    name: agrivision-llm
+    runtime: python
+    plan: free
+    rootDir: llm-service
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SARVAM_API_KEY
+        sync: false
+      - key: INTERNAL_API_KEY
+        generateValue: true
+
+  # 2. Fastify Node.js Backend API
+  - type: web
+    name: agrivision-backend
+    runtime: node
+    plan: free
+    buildCommand: npm install && npx prisma generate --schema=backend/prisma/schema.prisma && npx prisma migrate deploy --schema=backend/prisma/schema.prisma && npm run prisma:seed -w backend && npm run build -w backend
+    startCommand: node backend/dist/server.js
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: agrivision-db
+          property: connectionString
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: INTERNAL_API_KEY
+        fromService:
+          type: web
+          name: agrivision-llm
+          envVarKey: INTERNAL_API_KEY
+      - key: LLM_SERVICE_URL
+        fromService:
+          type: web
+          name: agrivision-llm
+          property: host
+      - key: FRONTEND_ORIGIN
+        value: "*"
+      - key: NODE_ENV
+        value: production
