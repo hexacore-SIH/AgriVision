@@ -28,7 +28,6 @@ export function RequireRole({
 
   if (initializing || !user || !roles.includes(user.role)) {
     return (
-      <div className="flex flex-1 items-center justify-center p-10 text-stone-500">
       <div className="flex flex-1 items-center justify-center p-10 text-stone-600 font-medium">
         ...
       </div>
