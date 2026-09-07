@@ -41,7 +41,7 @@ export function VoiceRecorder({
 
       recorder.onstop = () => handleStopped(recorder.mimeType || "audio/webm");
 
-      recorder.start();
+      recorder.start(250);
       recorderRef.current = recorder;
       setStatus("recording");
     } catch {
@@ -76,7 +76,8 @@ export function VoiceRecorder({
       });
 
       if (!response.ok) {
-        throw new Error(`Request failed: ${response.status}`);
+        const body = (await response.json().catch(() => ({}))) as { error?: string; message?: string };
+        throw new Error(body.error || body.message || `Request failed: ${response.status}`);
       }
 
       const data = (await response.json()) as VoiceInteractResponse;
@@ -84,15 +85,20 @@ export function VoiceRecorder({
       onResult?.(data);
       setStatus("idle");
 
-      if (audioRef.current) {
+      if (audioRef.current && data.audio?.base64) {
         audioRef.current.src = `data:${data.audio.mimeType};base64,${data.audio.base64}`;
         audioRef.current.play().catch(() => {
           /* autoplay may be blocked, user can press play manually */
         });
       }
-    } catch {
+    } catch (err: unknown) {
       setStatus("error");
-      setErrorMessage(t("noAudio"));
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes("Failed to fetch") || msg.includes("NetworkError")) {
+        setErrorMessage("Cannot connect to server. Please check backend status.");
+      } else {
+        setErrorMessage(msg || t("noAudio"));
+      }
     }
   }
 
