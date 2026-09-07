@@ -25,7 +25,7 @@ services:
     runtime: node
     plan: free
     buildCommand: npm install --include=dev && npx prisma generate --schema=backend/prisma/schema.prisma && npx prisma migrate deploy --schema=backend/prisma/schema.prisma && npm run prisma:seed -w backend && npm run build -w backend
-    startCommand: node backend/dist/server.js
+    startCommand: node backend/dist/src/server.js
     envVars:
       - key: DATABASE_URL
         fromDatabase:
