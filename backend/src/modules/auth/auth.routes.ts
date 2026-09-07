@@ -5,8 +5,19 @@ import { createOtp, verifyOtp } from "./otp.service.js";
 import { issueRefreshToken, rotateRefreshToken, revokeRefreshToken } from "../../lib/tokens.js";
 import { isProduction } from "../../config/env.js";
 
-const phoneSchema = z.object({ phone: z.string().min(8).max(15) });
-const verifySchema = z.object({ phone: z.string().min(8).max(15), code: z.string().length(6) });
+const phoneSchema = z.object({
+  phone: z
+    .string()
+    .transform((val) => val.replace(/[\s\-()]/g, ""))
+    .pipe(z.string().min(8, "Phone number must be at least 8 digits").max(15, "Phone number cannot exceed 15 digits")),
+});
+const verifySchema = z.object({
+  phone: z
+    .string()
+    .transform((val) => val.replace(/[\s\-()]/g, ""))
+    .pipe(z.string().min(8).max(15)),
+  code: z.string().trim().length(6, "OTP must be 6 digits"),
+});
 const patchMeSchema = z.object({
   name: z.string().min(1).max(100).optional(),
   preferredLanguage: z.enum(LANGUAGES).optional(),
@@ -18,24 +29,33 @@ const REFRESH_COOKIE = "agrivision_refresh";
 export default async function authRoutes(fastify: FastifyInstance) {
   const { prisma } = fastify;
 
+  const cookieOptions = {
+    httpOnly: true,
+    sameSite: isProduction ? ("none" as const) : ("lax" as const),
+    secure: isProduction,
+    path: "/",
+    maxAge: 30 * 24 * 60 * 60,
+  };
+
   fastify.post("/auth/otp/request", async (request, reply) => {
     const body = phoneSchema.safeParse(request.body);
     if (!body.success) {
-      return reply.code(400).send({ error: "Invalid phone number" });
+      return reply.code(400).send({ error: body.error.errors[0]?.message || "Invalid phone number" });
     }
 
     const code = await createOtp(prisma, body.data.phone);
+    const exposeDevOtp = process.env.EXPOSE_DEV_OTP !== "false";
 
     return reply.send({
       message: "OTP sent",
-      ...(isProduction ? {} : { devOtp: code }),
+      ...(exposeDevOtp ? { devOtp: code } : {}),
     });
   });
 
   fastify.post("/auth/otp/verify", async (request, reply) => {
     const body = verifySchema.safeParse(request.body);
     if (!body.success) {
-      return reply.code(400).send({ error: "Invalid request" });
+      return reply.code(400).send({ error: body.error.errors[0]?.message || "Invalid phone or OTP code" });
     }
 
     const { phone, code } = body.data;
@@ -55,13 +75,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
     );
     const refreshToken = await issueRefreshToken(prisma, user.id);
 
-    reply.setCookie(REFRESH_COOKIE, refreshToken, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: isProduction,
-      path: "/auth",
-      maxAge: 30 * 24 * 60 * 60,
-    });
+    reply.setCookie(REFRESH_COOKIE, refreshToken, cookieOptions);
 
     return reply.send({
       accessToken,
@@ -97,13 +111,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
       { expiresIn: "15m" }
     );
 
-    reply.setCookie(REFRESH_COOKIE, rotated.newToken, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: isProduction,
-      path: "/auth",
-      maxAge: 30 * 24 * 60 * 60,
-    });
+    reply.setCookie(REFRESH_COOKIE, rotated.newToken, cookieOptions);
 
     return reply.send({ accessToken });
   });
@@ -113,7 +121,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
     if (presented) {
       await revokeRefreshToken(prisma, presented);
     }
-    reply.clearCookie(REFRESH_COOKIE, { path: "/auth" });
+    reply.clearCookie(REFRESH_COOKIE, { path: "/" });
     return reply.send({ message: "Logged out" });
   });
 

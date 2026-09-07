@@ -1,4 +1,5 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+const RAW_API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+const API_URL = RAW_API_URL.replace(/\/+$/, "");
 
 let accessToken: string | null = null;
 let onUnauthorized: (() => void) | null = null;
@@ -32,7 +33,10 @@ export async function apiFetch(path: string, options: ApiOptions = {}): Promise<
     headers.set("Authorization", `Bearer ${accessToken}`);
   }
 
-  const response = await fetch(`${API_URL}${path}`, {
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  const fullUrl = `${API_URL}${normalizedPath}`;
+
+  const response = await fetch(fullUrl, {
     ...options,
     headers,
     credentials: "include",
@@ -43,7 +47,7 @@ export async function apiFetch(path: string, options: ApiOptions = {}): Promise<
     if (refreshed) {
       const retryHeaders = new Headers(options.headers);
       retryHeaders.set("Authorization", `Bearer ${refreshed}`);
-      return fetch(`${API_URL}${path}`, {
+      return fetch(fullUrl, {
         ...options,
         headers: retryHeaders,
         credentials: "include",

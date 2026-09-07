@@ -28,20 +28,38 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
+  const isLocalhostApiInProduction =
+    typeof window !== "undefined" &&
+    !["localhost", "127.0.0.1"].includes(window.location.hostname) &&
+    (!process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_URL.includes("localhost"));
+
   async function handleSendOtp(e: React.FormEvent) {
     e.preventDefault();
-    if (phone.trim().length < 8) {
+    const cleanPhone = phone.replace(/[\s\-()]/g, "");
+    if (cleanPhone.length < 8 || cleanPhone.length > 15) {
       setError(t("invalidPhone"));
       return;
     }
     setError(null);
     setBusy(true);
     try {
-      const res = await requestOtp(phone.trim());
+      const res = await requestOtp(cleanPhone);
       setDevOtp(res.devOtp ?? null);
       setStep("otp");
-    } catch {
-      setError(t("invalidPhone"));
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (
+        msg.includes("Failed to fetch") ||
+        msg.includes("NetworkError") ||
+        msg.includes("Load failed") ||
+        msg.includes("Network request failed")
+      ) {
+        setError(
+          `Cannot connect to backend server (${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}). Please verify backend is running on Render and NEXT_PUBLIC_API_URL is configured on Vercel.`
+        );
+      } else {
+        setError(msg || t("invalidPhone"));
+      }
     } finally {
       setBusy(false);
     }
@@ -49,13 +67,23 @@ export default function LoginPage() {
 
   async function handleVerify(e: React.FormEvent) {
     e.preventDefault();
+    const cleanPhone = phone.replace(/[\s\-()]/g, "");
     setError(null);
     setBusy(true);
     try {
-      const user = await verifyOtp(phone.trim(), code.trim());
+      const user = await verifyOtp(cleanPhone, code.trim());
       router.replace(ROLE_HOME[user.role] ?? "/");
-    } catch {
-      setError(t("invalidOtp"));
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (
+        msg.includes("Failed to fetch") ||
+        msg.includes("NetworkError") ||
+        msg.includes("Load failed")
+      ) {
+        setError("Cannot connect to server. Please verify backend connection.");
+      } else {
+        setError(msg || t("invalidOtp"));
+      }
     } finally {
       setBusy(false);
     }
@@ -74,6 +102,16 @@ export default function LoginPage() {
           <p className="mt-1 text-sm font-medium text-stone-600">{t("subtitle")}</p>
         </div>
 
+        {isLocalhostApiInProduction && (
+          <div className="mb-4 rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900">
+            <div className="font-bold">⚠️ Vercel Environment Notice</div>
+            <div className="mt-1">
+              Backend URL is set to <code className="font-mono bg-amber-100 px-1 rounded">{process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}</code>.
+              Set <code className="font-mono bg-amber-100 px-1 rounded">NEXT_PUBLIC_API_URL</code> in Vercel to your Render backend URL and redeploy.
+            </div>
+          </div>
+        )}
+
         {step === "phone" ? (
           <form onSubmit={handleSendOtp} className="space-y-4">
             <div>
@@ -90,12 +128,17 @@ export default function LoginPage() {
               />
             </div>
             {error && <p className="text-sm font-medium text-red-700">{error}</p>}
+            {busy && (
+              <p className="text-xs text-stone-500 animate-pulse text-center">
+                Connecting to backend... (Render free tier may take ~30s if waking up)
+              </p>
+            )}
             <button
               type="submit"
               disabled={busy}
               className="w-full rounded-lg bg-green-700 hover:bg-green-800 py-2.5 font-semibold text-white shadow-xs transition-colors disabled:opacity-50"
             >
-              {t("sendOtp")}
+              {busy ? tc("loading") : t("sendOtp")}
             </button>
           </form>
         ) : (
