@@ -76,20 +76,20 @@ function MandiDashboardContent() {
   const availableCrops = allCrops.filter((c) => !trackedCropIds.has(c.id));
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-[#f8faf7]">
       <TopNav />
       <main className="mx-auto w-full max-w-2xl flex-1 space-y-6 p-4">
-        <h1 className="text-xl font-semibold text-stone-900">{t("dashboardTitle")}</h1>
+        <h1 className="text-2xl font-bold text-stone-900">{t("dashboardTitle")}</h1>
 
         <div>
-          <h2 className="mb-2 font-medium text-stone-800">{t("voicePanelTitle")}</h2>
+          <h2 className="mb-2 font-bold text-stone-900">{t("voicePanelTitle")}</h2>
           <VoiceRecorder onResult={handleVoiceResult} />
         </div>
 
         <div>
           <div className="mb-2 flex items-center justify-between">
-            <h2 className="font-medium text-stone-800">{t("currentPrice")}</h2>
-            <p className="text-xs text-stone-400">{t("dragHint")}</p>
+            <h2 className="font-bold text-stone-900">{t("currentPrice")}</h2>
+            <p className="text-xs font-medium text-stone-600">{t("dragHint")}</p>
           </div>
 
           <DraggablePriceList
@@ -103,11 +103,11 @@ function MandiDashboardContent() {
               <select
                 value={addCropId}
                 onChange={(e) => setAddCropId(e.target.value)}
-                className="flex-1 rounded-lg border border-stone-300 px-3 py-2"
+                className="flex-1 rounded-lg border border-stone-300 bg-white px-3 py-2 text-stone-900 shadow-xs focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/20"
               >
-                <option value="">{t("selectCrop")}</option>
+                <option value="" className="text-stone-500">{t("selectCrop")}</option>
                 {availableCrops.map((crop) => (
-                  <option key={crop.id} value={crop.id}>
+                  <option key={crop.id} value={crop.id} className="text-stone-900 bg-white">
                     {cropLabel(crop.localNames, locale as Locale, crop.slug)}
                   </option>
                 ))}
@@ -115,7 +115,7 @@ function MandiDashboardContent() {
               <button
                 onClick={handleAddCrop}
                 disabled={!addCropId}
-                className="rounded-lg bg-green-600 px-4 py-2 font-medium text-white disabled:opacity-50"
+                className="rounded-lg bg-green-700 hover:bg-green-800 px-4 py-2 font-semibold text-white shadow-xs transition-colors disabled:opacity-50"
               >
                 {t("addCrop")}
               </button>

@@ -73,25 +73,25 @@ function FarmerListingsContent() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-[#f8faf7]">
       <TopNav />
       <main className="mx-auto w-full max-w-2xl flex-1 space-y-6 p-4">
-        <h1 className="text-xl font-semibold text-stone-900">{t("myListings")}</h1>
+        <h1 className="text-2xl font-bold text-stone-900">{t("myListings")}</h1>
 
         <form
           onSubmit={handleCreate}
-          className="grid grid-cols-2 gap-3 rounded-2xl border border-stone-200 bg-white p-4"
+          className="grid grid-cols-2 gap-3.5 rounded-2xl border border-stone-300/80 bg-white p-5 shadow-xs"
         >
-          <p className="col-span-2 font-medium text-stone-800">{t("createListing")}</p>
+          <p className="col-span-2 font-bold text-stone-900">{t("createListing")}</p>
 
           <select
             value={cropId}
             onChange={(e) => setCropId(e.target.value)}
-            className="col-span-2 rounded-lg border border-stone-300 px-3 py-2"
+            className="col-span-2 rounded-lg border border-stone-300 bg-white px-3 py-2 text-stone-900 shadow-xs focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/20"
           >
-            <option value="">{t("crop")}</option>
+            <option value="" className="text-stone-500">{t("crop")}</option>
             {crops.map((crop) => (
-              <option key={crop.id} value={crop.id}>
+              <option key={crop.id} value={crop.id} className="text-stone-900 bg-white">
                 {cropLabel(crop.localNames, locale as Locale, crop.slug)}
               </option>
             ))}
@@ -104,16 +104,16 @@ function FarmerListingsContent() {
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
             placeholder={t("quantity")}
-            className="rounded-lg border border-stone-300 px-3 py-2"
+            className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-stone-900 placeholder:text-stone-500 shadow-xs focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/20"
           />
 
           <select
             value={unit}
             onChange={(e) => setUnit(e.target.value as Unit)}
-            className="rounded-lg border border-stone-300 px-3 py-2"
+            className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-stone-900 shadow-xs focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/20"
           >
             {UNITS.map((u) => (
-              <option key={u} value={u}>
+              <option key={u} value={u} className="text-stone-900 bg-white">
                 {u}
               </option>
             ))}
@@ -126,13 +126,13 @@ function FarmerListingsContent() {
             value={askingPrice}
             onChange={(e) => setAskingPrice(e.target.value)}
             placeholder={t("askingPrice")}
-            className="col-span-2 rounded-lg border border-stone-300 px-3 py-2"
+            className="col-span-2 rounded-lg border border-stone-300 bg-white px-3 py-2 text-stone-900 placeholder:text-stone-500 shadow-xs focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/20"
           />
 
           <button
             type="submit"
             disabled={busy || !cropId || !quantity}
-            className="col-span-2 rounded-lg bg-green-600 py-2 font-medium text-white disabled:opacity-50"
+            className="col-span-2 rounded-lg bg-green-700 hover:bg-green-800 py-2.5 font-semibold text-white shadow-xs transition-colors disabled:opacity-50"
           >
             {tc("submit")}
           </button>
@@ -142,7 +142,7 @@ function FarmerListingsContent() {
           {listings.map((listing) => (
             <ListingCard key={listing.id} listing={listing} onStatusChange={handleStatusChange} />
           ))}
-          {listings.length === 0 && <p className="text-sm text-stone-400">{t("noListings")}</p>}
+          {listings.length === 0 && <p className="text-sm font-medium text-stone-600">{t("noListings")}</p>}
         </div>
       </main>
     </div>

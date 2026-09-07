@@ -14,6 +14,7 @@
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose down",
     "db:wait": "node scripts/wait-for-postgres.mjs",
+    "setup:windows": "powershell -ExecutionPolicy Bypass -File scripts/setup-windows.ps1",
     "all": "npm run db:up && npm run db:wait && concurrently -n db,backend,frontend,llm -c gray,blue,green,yellow --kill-others-on-fail \"docker compose logs -f postgres\" \"npm:dev:backend\" \"npm:dev:frontend\" \"npm:dev:llm\""
   },
   "devDependencies": {

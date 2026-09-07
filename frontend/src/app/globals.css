@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8faf7;
+  --foreground: #1c1917;
 }
 
 @theme inline {
@@ -12,15 +12,20 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  color-scheme: light;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Ensure inputs, selects, and textareas always have high contrast */
+input, select, textarea {
+  color: #1c1917;
+  background-color: #ffffff;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #78716c;
+  opacity: 1;
 }

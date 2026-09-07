@@ -150,9 +150,16 @@ export function NearbyMandisView() {
                         <TableRow key={row.cropId}>
                           <TableCell>{cropLabel(row.localNames, locale as Locale, row.cropSlug)}</TableCell>
                           <TableCell align="right">
-                            {row.currentPrice !== null
-                              ? `₹${row.currentPrice} / ${tu(row.unit)}`
-                              : "—"}
+                            {row.currentPrice !== null ? (
+                              <Typography component="span" fontWeight={600} color="text.primary">
+                                {`₹${row.currentPrice} `}
+                                <Typography component="span" variant="body2" color="text.secondary">
+                                  {`/ ${tu(row.unit)}`}
+                                </Typography>
+                              </Typography>
+                            ) : (
+                              "—"
+                            )}
                           </TableCell>
                         </TableRow>
                       ))}

@@ -27,6 +27,21 @@ transcript, reply text and reply audio (base64) in one response.
 
 ## First-time setup
 
+### Quick Setup for Windows
+In Command Prompt or PowerShell, run:
+```cmd
+setup-windows.bat
+```
+or
+```powershell
+npm run setup:windows
+```
+*(This automatically checks Node/Python/Docker, creates all `.env` files, installs npm workspaces, sets up `llm-service\.venv`, starts Postgres, and runs migrations/seeds).*
+
+---
+
+### Manual Setup (Linux / macOS / Windows)
+
 ```bash
 # 1. Install Node dependencies for all workspaces (frontend, backend, shared-types)
 npm install

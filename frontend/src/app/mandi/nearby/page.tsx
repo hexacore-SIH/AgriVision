@@ -9,11 +9,11 @@ function MandiNearbyContent() {
   const t = useTranslations("map");
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-[#f8faf7]">
       <TopNav />
       <main className="mx-auto w-full max-w-3xl flex-1 p-4">
-        <h1 className="mb-4 text-xl font-semibold text-stone-900">{t("nearbyTitle")}</h1>
-        <p className="mb-4 text-sm text-stone-500">{t("mandiHeadHint")}</p>
+        <h1 className="mb-2 text-2xl font-bold text-stone-900">{t("nearbyTitle")}</h1>
+        <p className="mb-4 text-sm font-medium text-stone-600">{t("mandiHeadHint")}</p>
         <NearbyMandisView />
       </main>
     </div>

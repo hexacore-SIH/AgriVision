@@ -58,14 +58,14 @@ function ScenarioCard({
       variant="outlined"
       sx={{
         flex: 1,
-        borderColor: recommended ? "primary.main" : undefined,
+        borderColor: recommended ? "primary.main" : "#d6d3d1",
         borderWidth: recommended ? 2 : 1,
         position: "relative",
       }}
     >
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1}>
-          <Typography variant="subtitle1" fontWeight={600}>
+          <Typography variant="subtitle1" fontWeight={700} color="text.primary">
             {title}
           </Typography>
           {recommended && (
@@ -74,17 +74,18 @@ function ScenarioCard({
               label={t("recommended")}
               color="primary"
               size="small"
+              sx={{ fontWeight: 700 }}
             />
           )}
         </Stack>
-        <Typography variant="h5" fontWeight={700} gutterBottom>
+        <Typography variant="h5" fontWeight={800} color="text.primary" gutterBottom>
           ₹{scenario.netRevenue.toLocaleString("en-IN")}
         </Typography>
-        <Typography variant="caption" color="text.secondary" display="block" gutterBottom>
+        <Typography variant="caption" color="text.secondary" fontWeight={600} display="block" gutterBottom>
           {t("netRevenue")}
         </Typography>
-        <Divider sx={{ my: 1.5 }} />
-        <Stack spacing={0.5}>
+        <Divider sx={{ my: 1.5, borderColor: "#e7e5e4" }} />
+        <Stack spacing={0.75}>
           <Row label={t("grossRevenue")} value={scenario.grossRevenue} />
           <Row label={t("commission")} value={-scenario.commission} />
           {scenario.storageCost > 0 && <Row label={t("storageCost")} value={-scenario.storageCost} />}
@@ -97,11 +98,15 @@ function ScenarioCard({
 function Row({ label, value }: { label: string; value: number }) {
   return (
     <Stack direction="row" justifyContent="space-between">
-      <Typography variant="body2" color="text.secondary">
+      <Typography variant="body2" color="text.secondary" fontWeight={500}>
         {label}
       </Typography>
-      <Typography variant="body2">
-        {value < 0 ? "-" : ""}₹{Math.abs(value).toLocaleString("en-IN")}
+      <Typography
+        variant="body2"
+        fontWeight={700}
+        color={value < 0 ? "error.main" : "text.primary"}
+      >
+        {value < 0 ? `-₹${Math.abs(value).toLocaleString("en-IN")}` : `₹${value.toLocaleString("en-IN")}`}
       </Typography>
     </Stack>
   );
@@ -285,7 +290,7 @@ function ProfitCalculatorContent() {
 export default function ProfitCalculatorPage() {
   return (
     <RequireRole roles={["FARMER"]}>
-      <div className="flex min-h-screen flex-col">
+      <div className="flex min-h-screen flex-col bg-[#f8faf7]">
         <TopNav />
         <main className="mx-auto w-full max-w-3xl flex-1 p-4">
           <ProfitCalculatorHeader />
@@ -300,8 +305,8 @@ function ProfitCalculatorHeader() {
   const t = useTranslations("profit");
   return (
     <div className="mb-4">
-      <h1 className="text-xl font-semibold text-stone-900">{t("title")}</h1>
-      <p className="text-sm text-stone-500">{t("subtitle")}</p>
+      <h1 className="text-2xl font-bold text-stone-900">{t("title")}</h1>
+      <p className="mt-1 text-sm font-medium text-stone-600">{t("subtitle")}</p>
     </div>
   );
 }

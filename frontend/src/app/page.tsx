@@ -28,8 +28,10 @@ export default function HomePage() {
 
   return (
     <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-[#f8faf7]">
       <TopNav />
       <main className="flex flex-1 items-center justify-center text-stone-500">
+      <main className="flex flex-1 items-center justify-center text-stone-600 font-medium">
         {t("common.loading")}
       </main>
     </div>

@@ -30,18 +30,20 @@ function FarmerDashboardContent() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-[#f8faf7]">
       <TopNav />
       <main className="mx-auto w-full max-w-2xl flex-1 space-y-6 p-4">
-        <h1 className="text-xl font-semibold text-stone-900">{t("dashboardTitle")}</h1>
-        <p className="text-sm text-stone-500">{t("voiceHint")}</p>
+        <div>
+          <h1 className="text-2xl font-bold text-stone-900">{t("dashboardTitle")}</h1>
+          <p className="mt-1 text-sm font-medium text-stone-600">{t("voiceHint")}</p>
+        </div>
 
         <VoiceRecorder onResult={handleVoiceResult} />
 
         <section>
-          <h2 className="mb-3 font-medium text-stone-800">{t("myListings")}</h2>
+          <h2 className="mb-3 font-bold text-stone-900">{t("myListings")}</h2>
           {listings.length === 0 ? (
-            <p className="text-sm text-stone-400">{t("noListings")}</p>
+            <p className="text-sm font-medium text-stone-600">{t("noListings")}</p>
           ) : (
             <div className="space-y-2">
               {listings.map((listing) => (

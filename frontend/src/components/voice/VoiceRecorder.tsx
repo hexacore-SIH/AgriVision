@@ -105,19 +105,19 @@ export function VoiceRecorder({
   }
 
   return (
-    <div className="flex flex-col items-center gap-4 rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
+    <div className="flex flex-col items-center gap-4 rounded-2xl border border-stone-300/80 bg-white p-6 shadow-sm">
       <button
         onClick={handleClick}
         disabled={status === "processing"}
         className={`flex h-24 w-24 items-center justify-center rounded-full text-4xl text-white shadow-lg transition-transform active:scale-95 disabled:opacity-50 ${
-          status === "recording" ? "bg-red-500 animate-pulse" : "bg-green-600"
+          status === "recording" ? "bg-red-600 animate-pulse ring-4 ring-red-200" : "bg-green-700 hover:bg-green-800"
         }`}
         aria-label={status === "recording" ? t("stop") : t("start")}
       >
         {status === "recording" ? "⏹" : "🎙️"}
       </button>
 
-      <p className="text-sm font-medium text-stone-600">
+      <p className={`text-sm font-semibold ${status === "error" ? "text-red-700" : "text-stone-800"}`}>
         {status === "recording" && t("recording")}
         {status === "processing" && t("processing")}
         {status === "idle" && t("start")}
@@ -125,14 +125,14 @@ export function VoiceRecorder({
       </p>
 
       {result && (
-        <div className="mt-2 w-full space-y-2 rounded-xl bg-stone-50 p-4 text-sm">
+        <div className="mt-2 w-full space-y-2 rounded-xl border border-stone-200 bg-stone-100/80 p-4 text-sm text-stone-900">
           <p>
-            <span className="font-semibold">{t("transcript")}: </span>
-            {result.transcript}
+            <span className="font-bold text-stone-900">{t("transcript")}: </span>
+            <span className="text-stone-800">{result.transcript}</span>
           </p>
           <p>
-            <span className="font-semibold">{t("response")}: </span>
-            {result.replyText}
+            <span className="font-bold text-stone-900">{t("response")}: </span>
+            <span className="text-stone-800">{result.replyText}</span>
           </p>
         </div>
       )}

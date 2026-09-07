@@ -62,22 +62,22 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-stone-50 p-4">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#f8faf7] p-4 text-stone-900">
       <div className="absolute right-4 top-4">
         <LanguageSwitcher />
       </div>
 
-      <div className="w-full max-w-sm rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
+      <div className="w-full max-w-sm rounded-2xl border border-stone-300/90 bg-white p-6 shadow-sm">
         <div className="mb-6 text-center">
-          <div className="text-3xl">🌾</div>
-          <h1 className="mt-2 text-lg font-semibold text-stone-900">{t("title")}</h1>
-          <p className="mt-1 text-sm text-stone-500">{t("subtitle")}</p>
+          <div className="text-4xl">🌾</div>
+          <h1 className="mt-2 text-xl font-bold text-stone-900">{t("title")}</h1>
+          <p className="mt-1 text-sm font-medium text-stone-600">{t("subtitle")}</p>
         </div>
 
         {step === "phone" ? (
           <form onSubmit={handleSendOtp} className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-stone-700">
+              <label className="mb-1.5 block text-sm font-semibold text-stone-800">
                 {t("phoneLabel")}
               </label>
               <input
@@ -85,15 +85,15 @@ export default function LoginPage() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder={t("phonePlaceholder")}
-                className="w-full rounded-lg border border-stone-300 px-3 py-2"
+                className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-stone-900 placeholder:text-stone-500 shadow-xs focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/20"
                 autoFocus
               />
             </div>
-            {error && <p className="text-sm text-red-600">{error}</p>}
+            {error && <p className="text-sm font-medium text-red-700">{error}</p>}
             <button
               type="submit"
               disabled={busy}
-              className="w-full rounded-lg bg-green-600 py-2 font-medium text-white disabled:opacity-50"
+              className="w-full rounded-lg bg-green-700 hover:bg-green-800 py-2.5 font-semibold text-white shadow-xs transition-colors disabled:opacity-50"
             >
               {t("sendOtp")}
             </button>
@@ -101,7 +101,7 @@ export default function LoginPage() {
         ) : (
           <form onSubmit={handleVerify} className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-stone-700">
+              <label className="mb-1.5 block text-sm font-semibold text-stone-800">
                 {t("otpLabel")}
               </label>
               <input
@@ -110,27 +110,27 @@ export default function LoginPage() {
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 placeholder={t("otpPlaceholder")}
-                className="w-full rounded-lg border border-stone-300 px-3 py-2"
+                className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-stone-900 placeholder:text-stone-500 shadow-xs focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/20"
                 autoFocus
               />
               {devOtp && (
-                <p className="mt-1 text-xs text-amber-600">
+                <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-2 text-xs font-semibold text-amber-800">
                   {t("devOtpHint", { code: devOtp })}
-                </p>
+                </div>
               )}
             </div>
-            {error && <p className="text-sm text-red-600">{error}</p>}
+            {error && <p className="text-sm font-medium text-red-700">{error}</p>}
             <button
               type="submit"
               disabled={busy}
-              className="w-full rounded-lg bg-green-600 py-2 font-medium text-white disabled:opacity-50"
+              className="w-full rounded-lg bg-green-700 hover:bg-green-800 py-2.5 font-semibold text-white shadow-xs transition-colors disabled:opacity-50"
             >
               {t("verify")}
             </button>
             <button
               type="button"
               onClick={() => setStep("phone")}
-              className="w-full text-sm text-stone-500"
+              className="w-full text-sm font-medium text-stone-600 hover:text-stone-900"
             >
               {t("changeNumber")}
             </button>
@@ -138,7 +138,7 @@ export default function LoginPage() {
         )}
       </div>
 
-      <p className="text-xs text-stone-400">
+      <p className="text-xs font-medium text-stone-600">
         {tc("language")}: {LOCALE_TO_LANGUAGE[locale]}
       </p>
     </div>

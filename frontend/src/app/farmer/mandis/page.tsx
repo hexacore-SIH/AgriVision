@@ -9,10 +9,10 @@ function FarmerMandisContent() {
   const t = useTranslations("map");
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-[#f8faf7]">
       <TopNav />
       <main className="mx-auto w-full max-w-3xl flex-1 p-4">
-        <h1 className="mb-4 text-xl font-semibold text-stone-900">{t("nearbyTitle")}</h1>
+        <h1 className="mb-4 text-2xl font-bold text-stone-900">{t("nearbyTitle")}</h1>
         <NearbyMandisView />
       </main>
     </div>

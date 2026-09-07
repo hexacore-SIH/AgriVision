@@ -59,38 +59,38 @@ function MandiHistoryContent() {
   }));
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-[#f8faf7]">
       <TopNav />
       <main className="mx-auto w-full max-w-2xl flex-1 space-y-6 p-4">
-        <h1 className="text-xl font-semibold text-stone-900">{t("priceHistoryTitle")}</h1>
+        <h1 className="text-2xl font-bold text-stone-900">{t("priceHistoryTitle")}</h1>
 
         <select
           value={cropId}
           onChange={(e) => setCropId(e.target.value)}
-          className="w-full rounded-lg border border-stone-300 px-3 py-2"
+          className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-stone-900 shadow-xs focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/20"
         >
-          <option value="">{t("selectCrop")}</option>
+          <option value="" className="text-stone-500">{t("selectCrop")}</option>
           {crops.map((crop) => (
-            <option key={crop.id} value={crop.id}>
+            <option key={crop.id} value={crop.id} className="text-stone-900 bg-white">
               {cropLabel(crop.localNames, locale as Locale, crop.slug)}
             </option>
           ))}
         </select>
 
         {chartData.length > 0 ? (
-          <div className="h-72 rounded-2xl border border-stone-200 bg-white p-4">
+          <div className="h-72 rounded-2xl border border-stone-300/80 bg-white p-4 shadow-xs">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e7e5e4" />
-                <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                <YAxis tick={{ fontSize: 12 }} />
-                <Tooltip />
-                <Line type="monotone" dataKey="price" stroke="#16a34a" strokeWidth={2} dot={false} />
+                <XAxis dataKey="date" tick={{ fontSize: 12, fill: "#44403c" }} />
+                <YAxis tick={{ fontSize: 12, fill: "#44403c" }} />
+                <Tooltip contentStyle={{ backgroundColor: "#ffffff", borderColor: "#d6d3d1", color: "#1c1917", borderRadius: "8px" }} />
+                <Line type="monotone" dataKey="price" stroke="#15803d" strokeWidth={2.5} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>
         ) : (
-          cropId && <p className="text-sm text-stone-400">{t("noPriceYet")}</p>
+          cropId && <p className="text-sm font-medium text-stone-600">{t("noPriceYet")}</p>
         )}
       </main>
     </div>

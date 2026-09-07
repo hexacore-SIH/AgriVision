@@ -35,11 +35,11 @@ export function LanguageSwitcher() {
     <select
       value={locale}
       onChange={(e) => handleChange(e.target.value as Locale)}
-      className="rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-sm"
+      className="rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-sm font-semibold text-stone-900 shadow-xs focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/20"
       aria-label="Language"
     >
       {LOCALES.map((code) => (
-        <option key={code} value={code}>
+        <option key={code} value={code} className="text-stone-900 bg-white">
           {LABELS[code]}
         </option>
       ))}

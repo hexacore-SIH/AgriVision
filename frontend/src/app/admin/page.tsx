@@ -69,14 +69,14 @@ function UsersSection({ mandis }: { mandis: MandiWithLocation[] }) {
 
   return (
     <section>
-      <h2 className="mb-3 font-medium text-stone-800">{t("usersTitle")}</h2>
+      <h2 className="mb-3 text-lg font-bold text-stone-900">{t("usersTitle")}</h2>
       <div className="space-y-2">
         {users.map((u) => (
-          <div key={u.id} className="flex flex-wrap items-center gap-2 rounded-xl border border-stone-200 bg-white p-3">
+          <div key={u.id} className="flex flex-wrap items-center gap-2 rounded-xl border border-stone-300/80 bg-white p-3.5 shadow-xs">
             <div className="min-w-[140px]">
-              <p className="font-medium">{u.name ?? u.phone}</p>
-              <p className="text-xs text-stone-400">
-                {u.phone} · {u.role}
+              <p className="font-semibold text-stone-900">{u.name ?? u.phone}</p>
+              <p className="text-xs font-medium text-stone-600">
+                {u.phone} · <span className="font-semibold text-stone-700">{u.role}</span>
               </p>
             </div>
             <select
@@ -84,13 +84,13 @@ function UsersSection({ mandis }: { mandis: MandiWithLocation[] }) {
               onChange={(e) =>
                 setPendingRole((prev) => ({ ...prev, [u.id]: e.target.value as Role }))
               }
-              className="rounded-lg border border-stone-300 px-2 py-1 text-sm"
+              className="rounded-lg border border-stone-300 bg-white px-2.5 py-1.5 text-sm font-medium text-stone-900 shadow-xs focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/20"
             >
-              <option value="" disabled>
+              <option value="" disabled className="text-stone-500">
                 {t("role")}
               </option>
               {ROLES.map((r) => (
-                <option key={r} value={r}>
+                <option key={r} value={r} className="text-stone-900 bg-white">
                   {r}
                 </option>
               ))}
@@ -101,13 +101,13 @@ function UsersSection({ mandis }: { mandis: MandiWithLocation[] }) {
                 onChange={(e) =>
                   setPendingMandi((prev) => ({ ...prev, [u.id]: e.target.value }))
                 }
-                className="rounded-lg border border-stone-300 px-2 py-1 text-sm"
+                className="rounded-lg border border-stone-300 bg-white px-2.5 py-1.5 text-sm font-medium text-stone-900 shadow-xs focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/20"
               >
-                <option value="" disabled>
+                <option value="" disabled className="text-stone-500">
                   {t("assignMandi")}
                 </option>
                 {mandis.map((m) => (
-                  <option key={m.id} value={m.id}>
+                  <option key={m.id} value={m.id} className="text-stone-900 bg-white">
                     {m.name}
                   </option>
                 ))}
@@ -116,7 +116,7 @@ function UsersSection({ mandis }: { mandis: MandiWithLocation[] }) {
             <button
               onClick={() => handlePromote(u.id)}
               disabled={!pendingRole[u.id]}
-              className="rounded-lg bg-green-600 px-3 py-1 text-sm font-medium text-white disabled:opacity-50"
+              className="rounded-lg bg-green-700 hover:bg-green-800 px-3.5 py-1.5 text-sm font-semibold text-white shadow-xs transition-colors disabled:opacity-50"
             >
               {t("promote")}
             </button>
@@ -315,12 +315,12 @@ function CropsSection() {
 
   return (
     <section>
-      <h2 className="mb-3 font-medium text-stone-800">{t("cropsTitle")}</h2>
+      <h2 className="mb-3 font-semibold text-stone-900">{t("cropsTitle")}</h2>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
         {crops.map((crop) => (
-          <div key={crop.id} className="rounded-xl border border-stone-200 bg-white p-3 text-sm">
+          <div key={crop.id} className="rounded-xl border border-stone-300 bg-white p-3 text-sm font-medium text-stone-900 shadow-sm">
             {cropLabel(crop.localNames, locale as Locale, crop.slug)}
-            <span className="ml-1 text-xs text-stone-400">({crop.defaultUnit})</span>
+            <span className="ml-1 text-xs font-normal text-stone-600">({crop.defaultUnit})</span>
           </div>
         ))}
       </div>
@@ -339,10 +339,10 @@ function AdminContent() {
   useEffect(loadMandis, []);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-[#f8faf7]">
       <TopNav />
       <main className="mx-auto w-full max-w-3xl flex-1 space-y-8 p-4">
-        <h1 className="text-xl font-semibold text-stone-900">{t("dashboardTitle")}</h1>
+        <h1 className="text-2xl font-bold text-stone-900">{t("dashboardTitle")}</h1>
         <UsersSection mandis={mandis} />
         <MandisSection mandis={mandis} onChange={loadMandis} />
         <CropsSection />

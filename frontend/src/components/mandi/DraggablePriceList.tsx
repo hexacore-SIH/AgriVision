@@ -71,22 +71,22 @@ function PriceCard({
     <div
       ref={setNodeRef}
       style={style}
-      className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white p-3"
+      className="flex items-center gap-3 rounded-xl border border-stone-300/80 bg-white p-3 shadow-xs"
     >
       <button
         {...attributes}
         {...listeners}
-        className="cursor-grab touch-none px-1 text-stone-400"
+        className="cursor-grab touch-none px-1 text-stone-500 hover:text-stone-800"
         aria-label="drag"
       >
         ⠿
       </button>
 
       <div className="flex-1">
-        <p className="font-medium text-stone-900">
+        <p className="font-semibold text-stone-900">
           {cropLabel(item.localNames, locale as Locale, item.cropSlug)}
         </p>
-        <p className="text-xs text-stone-400">
+        <p className="text-xs font-medium text-stone-600">
           {item.lastUpdatedAt
             ? t("lastUpdated", { time: new Date(item.lastUpdatedAt).toLocaleString() })
             : t("noPriceYet")}
@@ -100,13 +100,13 @@ function PriceCard({
           step="0.01"
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          className="w-24 rounded-lg border border-stone-300 px-2 py-1 text-right"
+          className="w-24 rounded-lg border border-stone-300 bg-white px-2 py-1 text-right font-semibold text-stone-900 shadow-xs focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/20"
         />
-        <span className="text-sm text-stone-500">{tu(item.unit)}</span>
+        <span className="text-sm font-semibold text-stone-700">{tu(item.unit)}</span>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="rounded-lg bg-green-600 px-3 py-1 text-sm font-medium text-white disabled:opacity-50"
+          className="rounded-lg bg-green-700 hover:bg-green-800 px-3 py-1 text-sm font-semibold text-white shadow-xs transition-colors disabled:opacity-50"
         >
           {t("updatePrice")}
         </button>
