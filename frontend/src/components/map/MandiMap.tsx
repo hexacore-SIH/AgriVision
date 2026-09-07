@@ -29,14 +29,22 @@ export interface MapMandi {
   isActive?: boolean;
 }
 
-function Recenter({ center }: { center: [number, number] }) {
-  // react-leaflet doesn't re-center an existing map on prop change by
-  // itself; nudge it via the map instance once we know the real center.
+function Recenter({
+  center,
+  selectedLocation,
+}: {
+  center: [number, number];
+  selectedLocation?: [number, number] | null;
+}) {
   const map = useMap();
   useEffect(() => {
-    map.setView(center, map.getZoom());
+    if (selectedLocation) {
+      map.flyTo(selectedLocation, Math.max(map.getZoom(), 8));
+    } else {
+      map.setView(center, map.getZoom());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [center[0], center[1]]);
+  }, [center[0], center[1], selectedLocation ? selectedLocation[0] : null, selectedLocation ? selectedLocation[1] : null]);
   return null;
 }
 
@@ -57,6 +65,14 @@ export function MandiMap({
 
   const located = useMemo(() => mandis.filter((m) => m.latitude !== null && m.longitude !== null), [mandis]);
 
+  const selectedMandi = useMemo(
+    () => mandis.find((m) => m.id === selectedMandiId && m.latitude !== null && m.longitude !== null),
+    [mandis, selectedMandiId]
+  );
+  const selectedLocation: [number, number] | null = selectedMandi
+    ? [selectedMandi.latitude as number, selectedMandi.longitude as number]
+    : null;
+
   const center: [number, number] = useMemo(() => {
     if (userLocation) return [userLocation.lat, userLocation.lng];
     if (located.length > 0) {
@@ -71,7 +87,7 @@ export function MandiMap({
   return (
     <MapContainer
       center={center}
-      zoom={userLocation ? 9 : 7}
+      zoom={userLocation ? 9 : (located.length > 1 ? 5 : 7)}
       style={{ height, width: "100%", borderRadius: 12 }}
       scrollWheelZoom={false}
     >
@@ -79,7 +95,7 @@ export function MandiMap({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Recenter center={center} />
+      <Recenter center={center} selectedLocation={selectedLocation} />
 
       {userLocation && (
         <CircleMarker

@@ -106,6 +106,15 @@ const MANDIS: Array<{
     longitude: 74.748,
     priceMultiplier: 0.98,
   },
+  {
+    id: "seed-mandi-lucknow",
+    name: "Lucknow APMC Mandi",
+    state: "Uttar Pradesh",
+    district: "Lucknow",
+    latitude: 26.984046,
+    longitude: 80.922061,
+    priceMultiplier: 0.98,
+  },
 ];
 
 async function main() {

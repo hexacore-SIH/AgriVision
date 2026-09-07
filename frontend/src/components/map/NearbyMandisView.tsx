@@ -45,6 +45,15 @@ export function NearbyMandisView() {
   const [pricesLoading, setPricesLoading] = useState(false);
 
   useEffect(() => {
+    // Fetch mandis immediately so all seeded mandis render right away
+    apiJson<NearbyMandi[]>("/mandis")
+      .then((data) => {
+        setMandis((prev) => (prev.length === 0 ? data.map((m) => ({ ...m, distanceKm: null })) : prev));
+      })
+      .catch(() => undefined);
+  }, []);
+
+  useEffect(() => {
     if (geo.status === "granted" && geo.location) {
       apiJson<NearbyMandi[]>(`/mandis/nearest?lat=${geo.location.lat}&lng=${geo.location.lng}&limit=10`)
         .then(setMandis)
