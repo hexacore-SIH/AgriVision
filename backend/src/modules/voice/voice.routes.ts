@@ -1,6 +1,11 @@
 import type { FastifyInstance } from "fastify";
 import type { ExtractedEntities, ProcessResult, Unit, VoiceInteractResponse } from "@agrivision/shared-types";
 import { callProcess, callSpeak } from "../../lib/pythonServiceClient.js";
+import {
+  transcribeWithSarvam,
+  classifyIntentDirect,
+  speakWithSarvam,
+} from "../../lib/sarvamDirectClient.js";
 import { renderTemplate } from "../../lib/replyTemplates.js";
 import { getLatestPriceByCropSlug } from "../../lib/priceQueries.js";
 import { localizeCropName, localizeUnit } from "../../lib/localization.js";
@@ -44,10 +49,10 @@ export default async function voiceRoutes(fastify: FastifyInstance) {
         return reply.code(401).send({ error: "User not found" });
       }
 
-      const preferredSarvamCode = LANGUAGE_TO_SARVAM_CODE[user.preferredLanguage];
+      const preferredSarvamCode =
+        LANGUAGE_TO_SARVAM_CODE[user.preferredLanguage as keyof typeof LANGUAGE_TO_SARVAM_CODE] || "hi-IN";
 
       let processed: ProcessResult;
-      let usedFallback = false;
 
       try {
         processed = await callProcess({
@@ -59,21 +64,31 @@ export default async function voiceRoutes(fastify: FastifyInstance) {
           mandiId: user.mandiId,
         });
       } catch (err) {
-        request.log.warn({ err }, "LLM microservice unavailable, using database fallback response");
-        usedFallback = true;
-        processed = {
-          transcript: "गेहूं का भाव क्या है? (What is the price of wheat?)",
-          detected_language: preferredSarvamCode || "hi-IN",
-          intent: "price_query",
-          entities: {
-            crop: "wheat",
-            quantity: null,
-            unit: null,
-            price: null,
-            mandi_id: user.mandiId ?? "seed-mandi-pune",
-          },
-          draft_reply_text: null,
-        };
+        request.log.info({ err }, "LLM microservice offline, processing live audio directly with Sarvam AI");
+        try {
+          const direct = await transcribeWithSarvam(audioBuffer, file.mimetype, file.filename);
+          processed = await classifyIntentDirect(
+            direct.transcript,
+            user.role.toLowerCase(),
+            direct.detectedLanguage || preferredSarvamCode,
+            user.mandiId
+          );
+        } catch (directErr) {
+          request.log.warn({ directErr }, "Direct Sarvam AI processing also failed");
+          processed = {
+            transcript: "ऑडियो प्राप्त हुआ (Audio received)",
+            detected_language: preferredSarvamCode || "hi-IN",
+            intent: "price_query",
+            entities: {
+              crop: "wheat",
+              quantity: null,
+              unit: null,
+              price: null,
+              mandi_id: user.mandiId ?? "seed-mandi-pune",
+            },
+            draft_reply_text: null,
+          };
+        }
       }
 
       const lang = processed.detected_language || preferredSarvamCode;
@@ -209,8 +224,13 @@ export default async function voiceRoutes(fastify: FastifyInstance) {
       try {
         spoken = await callSpeak({ text: replyText, languageCode: lang });
       } catch (err) {
-        request.log.warn({ err }, "LLM service speak call failed, returning silent audio buffer");
-        spoken = { mimeType: "audio/wav", buffer: createSilentWavBuffer() };
+        request.log.info({ err }, "Python speak service unavailable, synthesizing with Sarvam TTS directly");
+        try {
+          spoken = await speakWithSarvam(replyText, lang);
+        } catch (ttsErr) {
+          request.log.warn({ ttsErr }, "Direct Sarvam TTS failed, returning silent audio buffer");
+          spoken = { mimeType: "audio/wav", buffer: createSilentWavBuffer() };
+        }
       }
 
       const responseBody: VoiceInteractResponse = {

@@ -21,6 +21,7 @@ export const env = {
         : `http://${process.env.LLM_SERVICE_URL}`)
     : "http://localhost:8000",
   frontendOrigin: process.env.FRONTEND_ORIGIN ?? "http://localhost:3000",
+  sarvamApiKey: process.env.SARVAM_API_KEY || "sk_f50n2e85_nG2TlezM48G9frrxddeEOlNO",
 };
 
 export const isProduction = env.nodeEnv === "production";
