@@ -1,4 +1,5 @@
 import type { FastifyInstance } from "fastify";
+import type { ExtractedEntities, Unit, VoiceInteractResponse } from "@agrivision/shared-types";
 import type { ExtractedEntities, ProcessResult, Unit, VoiceInteractResponse } from "@agrivision/shared-types";
 import { callProcess, callSpeak } from "../../lib/pythonServiceClient.js";
 import { renderTemplate } from "../../lib/replyTemplates.js";
@@ -46,6 +47,14 @@ export default async function voiceRoutes(fastify: FastifyInstance) {
 
       const preferredSarvamCode = LANGUAGE_TO_SARVAM_CODE[user.preferredLanguage];
 
+      const processed = await callProcess({
+        audioBuffer,
+        filename: file.filename,
+        mimeType: file.mimetype,
+        role: user.role.toLowerCase(),
+        preferredLanguage: preferredSarvamCode,
+        mandiId: user.mandiId,
+      });
       let processed: ProcessResult;
       let usedFallback = false;
 
@@ -205,6 +214,7 @@ export default async function voiceRoutes(fastify: FastifyInstance) {
         },
       });
 
+      const spoken = await callSpeak({ text: replyText, languageCode: lang });
       let spoken: { mimeType: string; buffer: Buffer };
       try {
         spoken = await callSpeak({ text: replyText, languageCode: lang });

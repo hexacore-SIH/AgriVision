@@ -41,6 +41,7 @@ export function VoiceRecorder({
 
       recorder.onstop = () => handleStopped(recorder.mimeType || "audio/webm");
 
+      recorder.start();
       recorder.start(250);
       recorderRef.current = recorder;
       setStatus("recording");
